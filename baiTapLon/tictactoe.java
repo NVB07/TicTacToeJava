@@ -114,10 +114,6 @@ public class tictactoe  implements ActionListener{
                     }
                 }
             }
-            // else{
-            //     Draw();// hòa cờ
-            //     check();
-            // }
         }
  
        
