@@ -17,7 +17,7 @@ public class tictactoe  implements ActionListener{
     JButton scoreO = new JButton("Score O : 0" );
     
     JButton[] buttons = new JButton[9];
-    boolean player1_turn;
+    int  player1_turn = 2;
     int Xwin = 2;
     
     tictactoe(){
@@ -34,7 +34,7 @@ public class tictactoe  implements ActionListener{
         newGame_bt.addActionListener(this);
 
         scoreX.setLayout(new BorderLayout());
-        scoreX.setSize(100,47);
+        scoreX.setSize(120,47);
         scoreX.setLocation(100, 0);
         scoreX.setFont(new Font("Ink Free", Font.BOLD, 13));
         scoreX.setForeground(new Color(255, 0, 34));        
@@ -43,7 +43,7 @@ public class tictactoe  implements ActionListener{
 
 
         scoreO.setLayout(new BorderLayout());
-        scoreO.setSize(100,47);
+        scoreO.setSize(120,47);
         scoreO.setLocation(100, 47);
         scoreO.setFont(new Font("Ink Free", Font.BOLD, 13));
         scoreO.setForeground(new Color(255, 0, 34));        
@@ -93,73 +93,82 @@ public class tictactoe  implements ActionListener{
         for(int i=0; i<9; i++){
             //check Win
             if(e.getSource()==buttons[i]){
-                if(player1_turn){
+                if(player1_turn==1){
                     if(buttons[i].getText()==""){
                         buttons[i].setForeground(new Color(255,0,0));
                         buttons[i].setText("X");
-                        player1_turn=false;
+                        player1_turn=0;
                         header.setText("O turn");
+                        Draw();
                         check();
                     }
                 }
-                else{
+                else if(player1_turn == 0){
                     if(buttons[i].getText()==""){
                         buttons[i].setForeground(new Color(0,0,255));
                         buttons[i].setText("O");
-                        player1_turn=true;
+                        player1_turn=1;
                         header.setText("X turn");
+                        Draw();
                         check();
                     }
                 }
             }
-            else{
-                Draw();// hòa cờ
-                check();
-            }
+            // else{
+            //     Draw();// hòa cờ
+            //     check();
+            // }
         }
  
+       
         //khi click newGame
         if(e.getSource()==newGame_bt){
-           for(int i =0; i<9; i++){
+            for(int i =0; i<9; i++){
                 if(buttons[i].getText()=="X" || buttons[i].getText()=="O" || buttons[i].getText()==""){
                     buttons[i].setText("");
                     buttons[i].setBackground(new Color(243,255,86));
                     buttons[i].setEnabled(true);
                 }
-           }
-           if(Xwin== 1){
-            countX++;
-            scoreX.setText("Score X : "+ countX);
-            player1_turn=false;                  //X win thì O đánh trước
-            header.setText("O turn");
-           }
-           else if(Xwin==0){
-            countO++;
-            scoreO.setText("Score O : "+ countO);
-            player1_turn=true;                  //O win thì X đánh trước
-            header.setText("X turn");
-        }
-           Xwin =2; // set Default Value
+            }
+            if(Xwin== 1){
+             countX++;
+             scoreX.setText("Score X : "+ countX);
+             player1_turn=0;                  //X win thì O đánh trước
+             header.setText("O turn");
+            }
+            else if(Xwin==0){
+             countO++;
+             scoreO.setText("Score O : "+ countO);
+             player1_turn=1;                  //O win thì X đánh trước
+             header.setText("X turn");
+            }
+            else {
+                Xwin =2;// set Default Value
+                ranDom(); //random lượt chơi tiếp nếu hòa cờ
+            }
+             
            
         }
     }
 
     public void ranDom(){
-        if(random.nextInt(2)==0){
-            player1_turn=true;
+        if(random.nextInt(2)==1){
+            player1_turn= 1;
             header.setText("X turn");
         }
         else{
-            player1_turn=false;
+            player1_turn= 0;
             header.setText("O turn");
         }
     }
+
+    
 
     //lượt chơi đầu tiên Random
     public void firstTurn(){
         //dòng chữ "TicTacToe" hiển thị 2s rồi tắt
         try {
-            Thread.sleep(2000);
+            Thread.sleep(500);
         } catch (Exception e) {
             // TODO: handle exception
         }
@@ -286,8 +295,9 @@ public class tictactoe  implements ActionListener{
             ){
                 for(int i=0; i<9; i++){
                     buttons[i].setEnabled(false);
-                    header.setText("Draw");
                 }
+                header.setText("Draw");
+                Xwin=2;
             }
     }
 
@@ -301,7 +311,6 @@ public class tictactoe  implements ActionListener{
         }
         header.setText("X Wins");
         Xwin=1;
-
     }
 
     // khi O thắng
