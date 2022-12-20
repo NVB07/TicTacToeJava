@@ -143,10 +143,9 @@ public class tictactoe  implements ActionListener{
              header.setText("X turn");
             }
             else {
-                Xwin =2;// set Default Value
                 ranDom(); //random lượt chơi tiếp nếu hòa cờ
             }
-             
+             Xwin =2;// set Default Value
            
         }
     }
